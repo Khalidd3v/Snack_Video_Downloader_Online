@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Download</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin: 100px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        video {
+            max-width: 50%; /* Adjust the width as needed */
+            margin-bottom: 35px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .download-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        form {
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Download</h1>
+    <div class="download-container">
+        <video controls>
+            <source src="{{ video_src }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <form method="post" action="{% url 'download_video' video_src %}">
+            {% csrf_token %}
+            <button type="submit">Download the video now</button>
+        </form>
+    </div>
+</body>
+</html>
