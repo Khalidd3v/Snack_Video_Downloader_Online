@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import requests
 from bs4 import BeautifulSoup
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse , HttpResponse
 from urllib.parse import quote, unquote  # Add unquote import
 
 def get_video_info(video_url):
