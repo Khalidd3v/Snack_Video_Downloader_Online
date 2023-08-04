@@ -1,13 +1,21 @@
 from django.shortcuts import render
 import requests
 from bs4 import BeautifulSoup
-from django.http import StreamingHttpResponse , HttpResponse
-from urllib.parse import quote, unquote  # Add unquote import
+from django.http import StreamingHttpResponse, JsonResponse , HttpResponse
+from urllib.parse import quote, unquote
 
-def get_video_info(video_url):
-    response = requests.get(video_url)
+# Proxy fetch function
+def proxy_fetch(target_url):
+    response = requests.get(target_url)
     if response.status_code == 200:
-        soup = BeautifulSoup(response.content, 'html.parser')
+        return response.content
+    return None
+
+# Original function to get video info
+def get_video_info(video_url):
+    content = proxy_fetch(video_url)  # Use the proxy to fetch content
+    if content:
+        soup = BeautifulSoup(content, 'html.parser')
         video_tag = soup.find('video')
         if video_tag:
             video_src = video_tag['src']
@@ -20,7 +28,7 @@ def homepage(request):
         if video_url:
             video_src = get_video_info(video_url)
             if video_src:
-                video_src_decoded = unquote(video_src)  # Decode the URL
+                video_src_decoded = unquote(video_src)
                 context = {'video_src': video_src_decoded}
                 return render(request, 'app/video_download.html', context)
 
